@@ -1,9 +1,12 @@
-SNUT_supplement/
-├── code/
-│   ├── centralizer_depth3.py        # Python / Sage 脚本
-│   ├── centralizer_enum_depth2.g    # GAP 脚本
-│   └── requirements.txt             # 仅列 gap‑pkg/sage 版本或 “python>=3.8”
-├── data/
-│   ├── depth3_run.log               # 您最后一次运行的标准输出全文 (~10–50 kB)
-│   └── machine_specs.txt            # CPU, RAM, OS, GAP/Sage 版本
-└── README.md
+# Supplement for “Fractal–Spiral Manifold” (Paper 1)
+
+This repository contains the enumeration scripts and raw logs that support  
+**Conjecture 1 (Triadic‑Uniqueness)** up to denominator 3³.
+
+## Directory layout
+* `code/centralizer_depth3.py` – Python/Sage script scanning all
+  matrices `M = A / 3^d` with `|a_ij| ≤ 20`, `d ≤ 3`,  
+  subject to `MR = RM`, `det M = ±1`, `||M|| > 1`.
+* `code/centralizer_enum_depth2.g` – equivalent GAP script (depth 2).
+* `data/depth3_run.log` – console output, shows  
+
