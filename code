@@ -1,1 +1,49 @@
+import itertools
+from fractions import Fractionfrom fractions import Fraction
 
+R = ((0, -1), (1, -1))R = ((0, -1), (1, -1))
+
+def matmul(A, B):def matmul(A, B):
+    return ((A[0][0]*B[0][0] + A[0][1]*B[1][0],    return ((A[0][0]*B[0][0] + A[0][1]*B[1][0],
+             A[0][0]*B[0][1] + A[0][1]*B[1][1]),             A[0][0]*B[0][1] + A[0][1]*B[1][1]),
+            (A[1][0]*B[0][0] + A[1][1]*B[1][0],            (A[1][0]*B[0][0] + A[1][1]*B[1][0],
+             A[1][0]*B[0][1] + A[1][1]*B[1][1]))             A[1][0]*B[0][1] + A[1][1]*B[1][1]))
+
+def det(M):def det(M):
+    return M[0][0]*M[1][1] - M[0][1]*M[1][0]    return M[0][0]*M[1][1] - M[0][1]*M[1][0]
+
+def scale(M, den):def scale(M, den):
+    return tuple(tuple(Fraction(x, den) for x in row) for row in M)    return tuple(tuple(Fraction(x, den) for x in row) for row in M)
+
+# 深度搜索参数：分母扩展至27，元素范围扩展至±20# 深度搜索参数：分母扩展至27，元素范围扩展至±20
+MAX = 20MAX = 20
+DEPTHS = [0, 1, 2, 3]  # 分母为3^0,3^1,3^2,3^3 (即1,3,9,27)DEPTHS = [0, 1, 2, 3]  # 分母为3^0,3^1,3^2,3^3 (即1,3,9,27)
+
+candidates = []candidates = []
+for a11, a12, a21, a22 in itertools.product(range(-MAX, MAX+1), repeat=4):for a11, a12, a21, a22 in itertools.product(range(-MAX, MAX+1), repeat=4):
+    A = ((a11, a12), (a21, a22))    A = ((a11, a12), (a21, a22))
+    if matmul(A, R) != matmul(R, A):    if matmul(A, R) != matmul(R, A):
+        continue        continue
+    for d in DEPTHS:    for d in DEPTHS:
+        denom = 3**d        denom = 3**d
+        M = scale(A, denom)        M = scale(A, denom)
+        if det(M) not in (1, -1):        if det(M) not in (1, -1):
+            continue            continue
+        maxabs = max(abs(x) for row in M for x in row)        maxabs = max(abs(x) for row in M for x in row)
+        if maxabs <= 1:        if maxabs <= 1:
+            continue            continue
+        # 记录候选解及其行列式        # 记录候选解及其行列式
+        candidates.append((M, det(M)))        candidates.append((M, det(M)))
+
+print(f"Total candidates found: {len(candidates)}")print(f"Total candidates found: {len(candidates)}")
+if candidates:if candidates:
+    for idx, (M, det_val) in enumerate(candidates, 1):    for idx, (M, det_val) in enumerate(candidates, 1):
+        print(f"\nSolution {idx}:")        print(f"\nSolution {idx}:")
+        print(f"[ {M[0][0]:<8} {M[0][1]:<8} ]")        print(f"[ {M[0][0]:<8} {M[0][1]:<8} ]")
+        print(f"[ {M[1][0]:<8} {M[1][1]:<8} ]")        print(f"[ {M[1][0]:<8} {M[1][1]:<8} ]")
+        print(f"Determinant: {det_val}")        print(f"Determinant: {det_val}")
+        # 计算矩阵范数（最大行和范数）        # 计算矩阵范数（最大行和范数）
+        norm = max(abs(M[0][0]) + abs(M[0][1]), abs(M[1][0]) + abs(M[1][1]))        norm = max(abs(M[0][0]) + abs(M[0][1]), abs(M[1][0]) + abs(M[1][1]))
+        print(f"Matrix norm: {norm}")        print(f"Matrix norm: {norm}")
+else:else:
+    print    print    print    print    print    print    print    print    print    print    print    print    print    print    print    print("No non-trivial solutions found. This supports the uniqueness of k=3.""No non-trivial solutions found. This supports the uniqueness of k=3.""No non-trivial solutions found. This supports the uniqueness of k=3.""No non-trivial solutions found. This supports the uniqueness of k=3.""No non-trivial solutions found. This supports the uniqueness of k=3.""No non-trivial solutions found. This supports the uniqueness of k=3.""No non-trivial solutions found. This supports the uniqueness of k=3.""No non-trivial solutions found. This supports the uniqueness of k=3.""No non-trivial solutions found. This supports the uniqueness of k=3.""No non-trivial solutions found. This supports the uniqueness of k=3.""No non-trivial solutions found. This supports the uniqueness of k=3.""No non-trivial solutions found. This supports the uniqueness of k=3.""No non-trivial solutions found. This supports the uniqueness of k=3.""No non-trivial solutions found. This supports the uniqueness of k=3.""No non-trivial solutions found. This supports the uniqueness of k=3.""No non-trivial solutions found. This supports the uniqueness of k=3.")
