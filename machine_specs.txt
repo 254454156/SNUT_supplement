@@ -1,0 +1,4 @@
+12th Gen Intel(R) Core(TM) i7-12700F   2.10 GHz
+NVIDIA GeForce RTX 3060 Ti
+16.0 GB
+Windows
